@@ -5,6 +5,7 @@ import footballIcon from '../assets/football.png';
 
 interface MainMenuProps {
     isOpen: boolean;
+    isLeagueView: boolean;
 }
 
 const NavBar = st.div`
@@ -18,7 +19,7 @@ const NavBar = st.div`
     border-bottom: solid 1px #000;
     box-shadow 0 2px 6px #000;
     z-index: 1;
-    background-color: #001a00;
+    background-color: #040D49aa;
 `;
 
 const LogoWrapper = st(NavLink)`
@@ -41,11 +42,11 @@ const MainMenu = st.div`
     font-size: 16px;
     height: 2.5rem;
     padding: 0 1rem;
-    color: ${(props: MainMenuProps) => props.isOpen ? '#000' : '#fff'};
-    background-color: ${(props: MainMenuProps) => props.isOpen ? '#efe' : '#001a00'};
+    color: ${(props: MainMenuProps) => props.isOpen || props.isLeagueView ? '#000' : '#fff'};
+    background-color: ${(props: MainMenuProps) => props.isOpen || props.isLeagueView ? '#eef' : '#040D49'};
     &:hover {
         color: #000;
-        background-color: #efe;
+        background-color: #eef;
     }
     cursor: pointer;
 `;
@@ -54,7 +55,7 @@ const SubMenuBox = st.div`
     position: fixed;
     top: 2.5rem;
     left: 6rem;
-    background-color: #efe;
+    background-color: #eef;
 `;
 
 const SubMenus = st(NavLink)`
@@ -69,11 +70,11 @@ const SubMenus = st(NavLink)`
     padding: 0 1rem;
     &:hover {
         color: #fff;
-        background-color: #262;
+        background-color: #040D49;
     }
     &.active {
         color: #fff;
-        background-color: #262;
+        background-color: #040D49;
     }
 `;
 
@@ -89,30 +90,40 @@ const MenusLink = st(NavLink)`
     padding: 0 1rem;
     &:hover {
         color: #000;
-        background-color: #efe;
+        background-color: #eef;
     }
     &.active {
         color: #000;
-        background-color: #efe;
+        background-color: #eef;
     }
 `;
 
 export const Navbar = () => {
     const [showSubMenu, setShowSubMenu] = useState(false);
+    const [isLeagueView, setIsLeagueView] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (window.location.pathname.includes('ucl')) {
+            setIsLeagueView(false);
+        } else {
+            setIsLeagueView(true);
+        }
         document.addEventListener('mousedown', (event) => {
             const currentRef = menuRef.current;
             const target = event.target;
             // @ts-ignore
             if (currentRef && target && !currentRef.contains(target)) {
+                if (window.location.pathname.includes('ucl')) {
+                    setIsLeagueView(false);
+                }
                 setShowSubMenu(false);
             }
         });
     }, [menuRef]);
 
-    const closeSubMenu = () => {
+    const clickLeagueMenu = () => {
+        setIsLeagueView(true);
         setShowSubMenu(!showSubMenu);
     };
 
@@ -121,15 +132,15 @@ export const Navbar = () => {
             <LogoWrapper exact to='/'>
                 <img alt='covid-logo' src={footballIcon} />
             </LogoWrapper>
-            <MainMenu onClick={closeSubMenu} isOpen={showSubMenu}> Leagues </MainMenu>
-            <MenusLink exact to='/ucl'> UCL </MenusLink>
+            <MainMenu onClick={clickLeagueMenu} isOpen={showSubMenu} isLeagueView={isLeagueView}> Leagues </MainMenu>
+            <MenusLink onClick={() => setIsLeagueView(false)} exact to='/ucl'> UCL </MenusLink>
             {showSubMenu &&
                 <SubMenuBox ref={menuRef}>
-                    <SubMenus onClick={closeSubMenu} exact to='/epl'>EPL</SubMenus>
-                    <SubMenus onClick={closeSubMenu} exact to='/laliga'>La Liga</SubMenus>
-                    <SubMenus onClick={closeSubMenu} exact to='/seriea'>Serie A</SubMenus>
-                    <SubMenus onClick={closeSubMenu} exact to='/bundesliga'>BundesLiga</SubMenus>
-                    <SubMenus onClick={closeSubMenu} exact to='/ligue1'>Ligue 1</SubMenus>
+                    <SubMenus onClick={clickLeagueMenu} exact to='/epl'>EPL</SubMenus>
+                    <SubMenus onClick={clickLeagueMenu} exact to='/laliga'>La Liga</SubMenus>
+                    <SubMenus onClick={clickLeagueMenu} exact to='/seriea'>Serie A</SubMenus>
+                    <SubMenus onClick={clickLeagueMenu} exact to='/bundesliga'>BundesLiga</SubMenus>
+                    <SubMenus onClick={clickLeagueMenu} exact to='/ligue1'>Ligue 1</SubMenus>
                 </SubMenuBox>
             }
         </NavBar>

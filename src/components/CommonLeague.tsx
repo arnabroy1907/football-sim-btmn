@@ -3,7 +3,7 @@ import { createLeagueSchedule, getInitialPointsTable, updateTablePerRound } from
 import { getMatchResult } from '../backend/competions/match';
 import { LeagueData, LeagueSchedule, MatchScore, MatchupData, PointsTableData, RoundScoreData } from '../backend/types';
 import st from 'styled-components';
-import footballBg from '../assets/football-bg.jpg';
+import footballBg from '../assets/ucl-bg.jpeg';
 
 interface CommonLeagueProps {
     league: LeagueData;
@@ -24,6 +24,7 @@ interface LeagueColumnProp {
 
 const LeagueWrapper = st.div`
     padding: 1rem;
+    padding-top: 4rem;
     font-size: 16px;
     @media only screen and (max-width: 599px) {
         font-size: 10px;
@@ -31,7 +32,7 @@ const LeagueWrapper = st.div`
     background-image: url(${footballBg});
     background-size: contain;
     color: #fff;
-    background-color: #151f00;
+    background-color: #15001f;
     padding-bottom: 10rem;
 `;
 
@@ -72,13 +73,14 @@ const LeagueTableWrapper = st.div`
     display: flex;
     justify-content: space-around;
     flex-flow: wrap;
+    opacity: 0.8;
 `;
 
 const LeagueTable = st.div`
     display: flex;
     margin-bottom: 2rem;
-    border: 3px solid #262;
-    background-color: #fafffa;
+    border: 3px solid #226;
+    background-color: #fff;
     color: #000;
     border-radius: 5px;
     box-shadow: 0 0 10px 6px #000;
@@ -92,17 +94,17 @@ const LeagueTableColumns = st.div`
 const LeagueTableColumnHeader = st.span`
     text-align: center;
     padding: 0.5rem;
-    font-weight: 600;
-    border-bottom: 1px solid #262;
+    font-weight: 700;
+    border-bottom: 1px solid #226;
     @media only screen and (max-width: 599px) {
         padding: 0.25rem;
     }
-    background-color: #90d09070;
+    background-color: #9090d070;
 `;
 
 const LeagueTableColumnElem = st(LeagueTableColumnHeader)`
-    font-weight: normal;
-    border: 1px solid #ded;
+    font-weight: 500;
+    border: 1px solid #dde;
     background-color: ${(prop: LeagueColumnProp) => prop.bgColor ? prop.bgColor : '#fafffa'};
     overflow: hidden;
     white-space: nowrap;
@@ -117,13 +119,14 @@ const RoundsContainer = st.div`
 `;
 
 const RoundsWrapper = st.div`
-    border: 2px solid #262;
+    border: 2px solid #226;
     margin: 2rem 0.5rem;
     width: 360px;
     border-radius: 5px;
     box-shadow: 0 0 10px 6px #000;
     height: fit-content;
-    background-color: #fafffa;
+    background-color: #fff;
+    opacity: 0.8;
     color: #000;
     @media only screen and (max-width: 599px) {
         width: 320px;
@@ -133,9 +136,9 @@ const RoundsWrapper = st.div`
 const RoundsHeader = st.div`
     padding: 0.5rem;
     font-weight: 700;
-    border-bottom: 1px solid #262;
+    border-bottom: 1px solid #226;
     text-align: center;
-    background-color: #90d09070;
+    background-color: #9090d070;
     @media only screen and (max-width: 599px) {
         padding: 0.25rem;
     }
@@ -155,7 +158,8 @@ const RoundMatches = st.div`
 const RoundTeamSpan = st.div`
     flex: 2;
     padding: 0.5rem;
-    border: 1px solid #ded;
+    border: 1px solid #dde;
+    font-weight: 500;
     text-align: center;
     overflow: hidden;
     white-space: nowrap;
@@ -168,8 +172,9 @@ const RoundTeamSpan = st.div`
 const RoundScoreSpan = st.div`
     flex: 1;
     padding: 0.5rem;
-    border: 1px solid #ded;
+    border: 1px solid #dde;
     text-align: center;
+    font-weight: 500;
 `;
 
 const LeagueOpsCenter = st.div`
@@ -179,13 +184,14 @@ const LeagueOpsCenter = st.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: #001a00;
+    background-color: #040D49aa;
     box-shadow 0 -2px 5px #000;
+    z-index: 2;
 `;
 
 const LeagueOpsButton = st.div`
-    background-color: #496;
-    color: #fff;
+    background-color: #ddd;
+    color: #040E49;
     font-weight: 700;
     padding: 1rem;
     border-radius: 5px;
@@ -194,7 +200,7 @@ const LeagueOpsButton = st.div`
     cursor: pointer;
     transition: linear 200ms;
     &:hover {
-        background-color: #5b7;
+        background-color: #fff;
     }
 `;
 
@@ -288,7 +294,7 @@ export const CommonLeague = (props: CommonLeagueProps) => {
         if (id > 0 && id < props.topTier) return '#ddefff';
         if (id === props.topTier) return '#faeadf';
         if (id > size - 4) return '#faeaea';
-        return '#fafffa';
+        return '#fafaff';
     }
 
     if (!leagueTable || !leagueSchedule) {
@@ -299,7 +305,7 @@ export const CommonLeague = (props: CommonLeagueProps) => {
     return (
         <LeagueWrapper>
             <LeagueHeader>
-                {props.logo && <img src={props.logo} alt={props.league.name}/> }
+                <img src={props.logo} alt={props.league.name}/>
                 <span> {props.league.name.toUpperCase()} </span>
             </LeagueHeader>
             <LeagueOpsCenter>
