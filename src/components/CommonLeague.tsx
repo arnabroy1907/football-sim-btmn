@@ -299,7 +299,7 @@ export const CommonLeague = (props: CommonLeagueProps) => {
     return (
         <LeagueWrapper>
             <LeagueHeader>
-                <img src={props.logo} alt={props.league.name}/>
+                {props.logo && <img src={props.logo} alt={props.league.name}/> }
                 <span> {props.league.name.toUpperCase()} </span>
             </LeagueHeader>
             <LeagueOpsCenter>
